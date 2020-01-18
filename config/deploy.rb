@@ -18,6 +18,19 @@ set :passenger_restart_command, '/usr/bin/passenger-config restart-app'
 set :passenger_restart_with_touch, false
 set :passenger_in_gemfile, true
 
+namespace :deploy do
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
+    end
+  end
+
+end
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
